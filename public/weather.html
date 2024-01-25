@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weather</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <nav>
+    <ul>
+      <li><a href="/weather">Weather</a></li>
+      <li><a href="/contacts">Contacts</a></li>
+      <li><a href="/flights">Flights</a></li>
+    </ul>
+  </nav>
+  <h1>Weather</h1>
+
+  <form id="city-form">
+    <label for="city">Enter City:</label>
+    <input type="text" id="city" name="city" required>
+    <button type="button" onclick="getWeather()">Confirm</button>
+  </form>
+
+  <div id="weather-info"></div>
+
+  <script>
+    async function getWeather() {
+      const cityInput = document.getElementById('city');
+      const cityName = cityInput.value;
+
+      try {
+        const response = await fetch(`/weather?city=${encodeURIComponent(cityName)}`);
+        const weatherData = await response.json();
+
+        const weatherInfoDiv = document.getElementById('weather-info');
+        weatherInfoDiv.innerHTML = `
+          <h2>Weather Information for ${weatherData.location}</h2>
+          <p>Temperature: ${weatherData.temperature}°C</p>
+          <p>Condition: ${weatherData.condition}</p>
+          <p>Humidity: ${weatherData.humidity}%</p>
+        `;
+      } catch (error) {
+        console.error('Error fetching weather data:', error.message);
+      }
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Flight Booking</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav>
+        <ul>
+          <li><a href="/weather">Weather</a></li>
+          <li><a href="/contacts">Contacts</a></li>
+          <li><a href="/flights">Flights</a></li>
+        </ul>
+      </nav>
+  <h1>Flight Booking</h1>
+  
+  <form id="flightForm" action="/flights/search" method="get">
+    <label for="origin">Origin:</label>
+    <input type="text" id="origin" name="origin" required><br><br>
+    
+    <label for="destination">Destination:</label>
+    <input type="text" id="destination" name="destination" required><br><br>
+    
+    <label for="date">Date:</label>
+    <input type="date" id="date" name="date" required><br><br>
+    
+    <button type="submit">Search Flights</button>
+  </form>
+  
+  <div id="flightResults">
+    <!-- Flight results will be displayed here -->
+  </div>
+</body>
+</html>
