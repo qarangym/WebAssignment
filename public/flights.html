@@ -3,34 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Flight Booking</title>
-  <link rel="stylesheet" href="styles.css">
+  <title>Flights</title>
 </head>
 <body>
-    <nav>
-        <ul>
-          <li><a href="/weather">Weather</a></li>
-          <li><a href="/contacts">Contacts</a></li>
-          <li><a href="/flights">Flights</a></li>
-        </ul>
-      </nav>
-  <h1>Flight Booking</h1>
+  <h1>Flight Search</h1>
   
-  <form id="flightForm" action="/flights/search" method="get">
+  <!-- Form for flight search -->
+  <form id="flightForm" action="/flights/search" method="get"> <!-- Updated action to /flights/search -->
     <label for="origin">Origin:</label>
-    <input type="text" id="origin" name="origin" required><br><br>
+    <input type="text" id="origin" name="fromId" required><br><br> <!-- Updated name attribute to fromId -->
     
     <label for="destination">Destination:</label>
-    <input type="text" id="destination" name="destination" required><br><br>
+    <input type="text" id="destination" name="toId" required><br><br> <!-- Updated name attribute to toId -->
     
     <label for="date">Date:</label>
-    <input type="date" id="date" name="date" required><br><br>
+    <input type="date" id="date" name="departDate" required><br><br> <!-- Updated name attribute to departDate -->
     
     <button type="submit">Search Flights</button>
   </form>
   
+  <!-- Placeholder for displaying flight data -->
   <div id="flightResults">
-    <!-- Flight results will be displayed here -->
+    <!-- Flight data will be displayed here -->
   </div>
+
+  <!-- Include JavaScript file for handling flight search -->
+  <script src="script.js"></script>
+
+  <!-- Script to fetch and display flight data -->
+  <script>
+    // Function to fetch flight data from the server and display it
+    async function fetchAndDisplayFlights() {
+      try {
+        const response = await fetch('/api/flights'); // Fetch flight data from server
+        const data = await response.json(); // Extract JSON data from response
+  
+        // Check if data is an array
+        if (Array.isArray(data)) {
+          // Iterate over each flight in the data and create HTML elements to display them
+          data.forEach(flight => {
+            displayFlight(flight);
+          });
+        } else {
+          // If data is not an array, display a single flight
+          displayFlight(data);
+        }
+      } catch (error) {
+        console.error('Error fetching flight data:', error.message);
+      }
+    }
+  
+    // Function to display a single flight
+    function displayFlight(flight) {
+      const flightElement = document.createElement('div');
+      flightElement.innerHTML = `
+        <h2>Flight Information</h2>
+        <p>Departure Airport: ${flight.departureAirport.cityName}</p>
+        <p>Arrival Airport: ${flight.arrivalAirport.cityName}</p>
+        <p>Departure Time: ${flight.departureTime}</p>
+        <p>Arrival Time: ${flight.arrivalTime}</p>
+        <p>Price: ${flight.priceBreakdown.total.currencyCode} ${flight.priceBreakdown.total.units}.${flight.priceBreakdown.total.nanos}</p>
+        <hr>
+      `;
+      document.getElementById('flightResults').appendChild(flightElement); // Append flight element to flightResults div
+    }
+  
+    // Call the fetchAndDisplayFlights function when the page loads
+    window.onload = fetchAndDisplayFlights;
+  </script>
+  
 </body>
 </html>

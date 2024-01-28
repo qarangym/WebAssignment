@@ -8,17 +8,10 @@ const port = 3000;
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Route for serving the weather page
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'weather.html'));
-});
-app.get('/contacts', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'contacts.html'));
-});
-// Define a route to get weather information
 app.get('/weather', async (req, res) => {
   try {
     const apiKey = 'f8c14aa329ba434b8c992642241701';
-    const city = req.query.city || 'Astana';
+    const city = req.query.destination || 'Astana'; // Use 'destination' query parameter for city
 
     // Make a request to the WeatherAPI
     const response = await axios.get(`http://api.weatherapi.com/v1/current.json?key=${apiKey}&q=${city}`);
@@ -43,37 +36,57 @@ app.get('/flights', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'flights.html'));
 });
 
-// Define a route to get flight information
+// Define a route to search for flights
+// Route for searching flights
 app.get('/flights/search', async (req, res) => {
   try {
-    const { origin, destination, date } = req.query;
-    const apiKey = '273be8f9eamshe6fddc537b08da0p14b121jsn36f71f2a94cd';
+    const { fromId, toId, departDate } = req.query;
 
-    // Make a request to the flight booking API
-    const response = await axios.get('https://flight-info-api.p.rapidapi.com/schedules', {
+    const options = {
+      method: 'GET',
+      url: 'https://booking-com15.p.rapidapi.com/api/v1/flights/searchFlights',
       params: {
-        version: 'v2',
-        DepartureDateTime: date,
-        DepartureAirport: origin,
-        ArrivalAirport: destination
+        fromId: 'NQZ.AIRPORT',
+        toId: 'ALA.AIRPORT',
+        departDate: '2024-02-02',
+        pageNo: '1',
+        adults: '1',
+        children: '0',
+        currency_code: 'USD'
       },
       headers: {
-        'X-RapidAPI-Key': apiKey,
-        'X-RapidAPI-Host': 'flight-info-api.p.rapidapi.com'
+        'X-RapidAPI-Key': '273be8f9eamshe6fddc537b08da0p14b121jsn36f71f2a94cd',
+        'X-RapidAPI-Host': 'booking-com15.p.rapidapi.com'
       }
-    });
+    };
 
-    // Assuming the response format, you can modify it based on the API you're using
-    const flightsData = response.data;
+    const response = await axios.request(options);
 
-    // Send the flight information as a JSON response
+    // Check if flight offers exist
+    if (!response.data.flightOffers || response.data.flightOffers.length === 0) {
+      throw new Error('No flight offers available.');
+    }
+
+    // Extract flight data from the response
+    const flight = response.data.flightOffers[0]; // Assuming the first offer is used
+    const segments = flight.segments || [];
+    const firstSegment = segments[0] || {};
+
+    const flightsData = {
+      destination: firstSegment.arrivalAirport ? firstSegment.arrivalAirport.cityName : 'Unknown',
+      departureTime: firstSegment.departureTime || 'Unknown',
+      arrivalTime: firstSegment.arrivalTime || 'Unknown',
+      price: flight.travellerPrices ? flight.travellerPrices[0] : 'Unknown'
+    };
+
     res.json(flightsData);
   } catch (error) {
-    // Handle errors
     console.error('Error fetching flight data:', error.message);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 });
+
+
 
 // Start the Express server
 app.listen(port, () => {
