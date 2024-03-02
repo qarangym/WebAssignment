@@ -1,18 +1,5 @@
 [
   {
-    "id": 1,
-    "origin": "New York",
-    "destination": "Paris",
-    "country": "France",
-    "city": "Paris",
-    "hotel": "Luxury Palace Hotel",
-    "dateArrival": "2024-07-01",
-    "dateDeparture": "2024-07-10",
-    "adults": 2,
-    "children": 1,
-    "price": 2500
-  },
-  {
     "id": 3,
     "origin": "Los Angeles",
     "destination": "Tokyo",
