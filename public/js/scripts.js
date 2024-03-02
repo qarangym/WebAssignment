@@ -67,7 +67,7 @@ async function viewTours() {
             const listItem = document.createElement('li');
             listItem.className = 'list-group-item';
             const cityLink = document.createElement('a');
-            cityLink.textContent = `Destination: ${tour.destination}, Price: ${tour.price}`;
+            cityLink.textContent = `Destination: ${tour.destination}, Price: ${tour.price}, ID:.  ${tour._id}`;
             cityLink.href = '#';
             cityLink.addEventListener('click', (event) => {
                 event.preventDefault(); 
