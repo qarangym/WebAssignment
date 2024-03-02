@@ -1,26 +1,16 @@
-function toggleTourVisibility() {
-    const tourList = document.getElementById('tour-list');
-    tourList.style.display = tourList.style.display === 'none' ? 'block' : 'none';
-}
-
-function toggleHistoryVisibility() {
-    const historyList = document.getElementById('tour-history');
-    historyList.style.display = historyList.style.display === 'none' ? 'block' : 'none';
-}
-
 async function addTour() {
     try {
         const origin = document.getElementById('origin').value;
         const destination = document.getElementById('destination').value;
-        const country = document.getElementById('country').value;
-        const city = document.getElementById('city').value;
+        const city = document.getElementById('destination').value;
         const hotel = document.getElementById('hotel').value;
         const dateArrival = document.getElementById('dateArrival').value;
         const dateDeparture = document.getElementById('dateDeparture').value;
         const adults = document.getElementById('adults').value;
-        const children = document.getElementById('children').value;
+        const children = document.getElementById('children').value;        
+        const price = document.getElementById('price').value;
 
-        const response = await fetch('/travelagency', {
+        const response = await fetch('/api/tours', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -28,13 +18,13 @@ async function addTour() {
             body: JSON.stringify({
                 origin,
                 destination,
-                country,
                 city,
                 hotel,
                 dateArrival,
                 dateDeparture,
                 adults,
-                children
+                children,
+                price
             })
         });
         if (response.ok) {
@@ -53,7 +43,7 @@ async function deleteTour() {
         const tourId = prompt('Enter the ID of the tour you want to delete:');
         if (!tourId) return;
 
-        const response = await fetch(`/travelagency/${tourId}`, {
+        const response = await fetch(`/api/tours/${tourId}`, {
             method: 'DELETE'
         });
         if (response.ok) {
@@ -69,7 +59,7 @@ async function deleteTour() {
 
 async function viewTours() {
     try {
-        const response = await fetch('/travelagency');
+        const response = await fetch('/api/tours');
         const tours = await response.json();
         const tourList = document.getElementById('tour-list');
         tourList.innerHTML = ''; 
@@ -91,20 +81,6 @@ async function viewTours() {
     }
 }
 
-async function fetchWeather(city) {
-    try {
-        const apiKey = 'f8c14aa329ba434b8c992642241701';
-        
-        const response = await fetch(`/weather?city=${city}&apiKey=${apiKey}`);
-        const weatherData = await response.json();
-
-        alert(`Weather in ${weatherData.location}: Temperature: ${weatherData.temperature}°C, Condition: ${weatherData.condition}, Humidity: ${weatherData.humidity}%`);
-    } catch (error) {
-        console.error('Error fetching weather data:', error);
-    }
-}
-
-
 async function viewHistory() {
     try {
         const response = await fetch('/travelagency/history');
@@ -122,21 +98,16 @@ async function viewHistory() {
     }
 }
 
-async function fetchCities() {
+async function fetchWeather(city) {
     try {
-        const country = document.getElementById('country').value;
-        const response = await fetch(`/cities?country=${country}`);
-        const cities = await response.json();
-        const cityDropdown = document.getElementById('city');
-        cityDropdown.innerHTML = '<option value="">Select City</option>'; 
-        cities.forEach(city => {
-            const option = document.createElement('option');
-            option.value = city;
-            option.textContent = city;
-            cityDropdown.appendChild(option);
-        });
+        const apiKey = 'f8c14aa329ba434b8c992642241701';
+        
+        const response = await fetch(`/weather?city=${city}&apiKey=${apiKey}`);
+        const weatherData = await response.json();
+
+        alert(`Weather in ${weatherData.location}: Temperature: ${weatherData.temperature}°C, Condition: ${weatherData.condition}, Humidity: ${weatherData.humidity}%`);
     } catch (error) {
-        console.error('Error fetching cities:', error);
+        console.error('Error fetching weather data:', error);
     }
 }
 
@@ -162,12 +133,12 @@ function toggleHistoryFunction() {
     isViewHistory = false; 
 }
 
-async function fetchInitialData() {
-    try {
-        await fetchCities();
-    } catch (error) {
-        console.error('Error during initialization:', error);
-    }
+function toggleTourVisibility() {
+    const tourList = document.getElementById('tour-list');
+    tourList.style.display = tourList.style.display === 'none' ? 'block' : 'none';
 }
 
-window.onload = fetchInitialData;
+function toggleHistoryVisibility() {
+    const historyList = document.getElementById('tour-history');
+    historyList.style.display = historyList.style.display === 'none' ? 'block' : 'none';
+}

@@ -6,7 +6,6 @@
     <title>Travel Agency</title>
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
@@ -21,7 +20,7 @@
                     <a class="nav-link" href="#">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/travelagency">Travel Agency</a>
+                    <a class="nav-link" href="/api/tours">Tours</a>
                 </li>
             </ul>
         </div>
@@ -51,15 +50,20 @@
                             <input type="text" class="form-control" id="hotel" required>
                         </div>
                         <div class="form-group col-md-6">
-                            <label for="dateArrival">Date of Arrival:</label>
-                            <input type="date" class="form-control" id="dateArrival" required>
+                            <label for="dateDeparture">Price</label>
+                            <input type="number" class="form-control" id="price" required>
                         </div>
                     </div>
                     <div class="form-row">
-                        <div class="form-group col-md-6">
+                        <div class="form-group col-md-3">
+                            <label for="dateArrival">Date of Arrival:</label>
+                            <input type="date" class="form-control" id="dateArrival" required>
+                        </div>
+                        <div class="form-group col-md-3">
                             <label for="dateDeparture">Date of Departure:</label>
                             <input type="date" class="form-control" id="dateDeparture" required>
                         </div>
+                        
                         <div class="form-group col-md-3">
                             <label for="adults">Adults:</label>
                             <input type="number" class="form-control" id="adults" required>
@@ -69,43 +73,42 @@
                             <input type="number" class="form-control" id="children" required>
                         </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Add Tour</button>
+                    <button type="submit" class="btn btn-primary" onclick="addTour()">Add Tour</button>
                 </form>
             </div>
         </div>
 
-<div class="mt-5">
-    <h3>Control Panel</h3>
-    <button class="btn btn-primary mr-2" onclick="toggleTourFunction()">View Tours</button>
-    <button class="btn btn-success mr-2" onclick="addTour()">Add Tour</button>
-    <button class="btn btn-danger mr-2" onclick="deleteTour()">Delete Tour</button>
-    <button class="btn btn-info" onclick="toggleHistoryFunction()">View History</button>
-</div>
-
-
-              <!-- Tour Listings -->
-              <div class="mt-5">
-                <h3>Tour Listings</h3>
-                <ul id="tour-list" class="list-group">
-                </ul>
-            </div>
-    
-            <!-- Tour History -->
-            <div class="mt-5">
-                <h3>Tour History</h3>
-                <ul id="tour-history" class="list-group">
-                </ul>
-            </div>
+        <div class="mt-5">
+            <h3>Control Panel</h3>
+            <button class="btn btn-primary mr-2" onclick="toggleTourFunction()">View Tours</button>
+            <button class="btn btn-danger mr-2" onclick="deleteTour()">Delete Tour</button>
+            <button class="btn btn-info" onclick="toggleHistoryFunction()">View History</button>
         </div>
-        <footer class="footer mt-auto py-3 bg-light">
-            <div class="container">
-                <span class="text-muted">Created by Khlobystov Timur | Se-2209</span>
-            </div>
-        </footer>
+
+        <!-- Tour Listings -->
+        <div class="mt-5">
+            <h3>Tour Listings</h3>
+            <ul id="tour-list" class="list-group">
+            </ul>
+        </div>
+
+        <!-- Tour History -->
+        <div class="mt-5">
+            <h3>Tour History</h3>
+            <ul id="tour-history" class="list-group">
+            </ul>
+        </div>
+    </div>
+
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <span class="text-muted">Created by Khlobystov Timur | SE-2209</span>
+        </div>
+    </footer>
+
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
     <script src="js/scripts.js"></script>
 </body>
 </html>
